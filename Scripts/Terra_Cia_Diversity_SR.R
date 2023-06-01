@@ -28,7 +28,7 @@ cat("\014")
 
 set.seed(2)
 
-############ Understory Species Richness/Diversity #############################
+############ 1Understory Species Richness/Diversity #############################
 
 Data <- read.csv("Terra Cia - Solar Weed Data - Pre & Post Data.csv")
 str(Data)
