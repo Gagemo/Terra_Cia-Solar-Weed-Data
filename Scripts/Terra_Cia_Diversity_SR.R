@@ -30,7 +30,7 @@ set.seed(2)
 
 ############ 1Understory Species Richness/Diversity #############################
 
-Data <- read.csv("Terra Cia - Solar Weed Data - Pre & Post Data.csv")
+Data <- read.csv("Terra_Cia-Solar-Weed-Data/Data/Terra Cia - Solar Weed Data - Pre & Post Data.csv")
 str(Data)
 
 
@@ -47,8 +47,9 @@ Data <- mutate(Data, CV_Midpoint = case_when(
 ))
 
 # Remove extra quadrats #
-#Data = filter(Data, Qdrt != 4)
-#Data = filter(Data, Qdrt != 5)
+Data = filter(Data, Qdrt != 3)
+Data = filter(Data, Qdrt != 4)
+Data = filter(Data, Qdrt != 5)
 
 # Remove physical variables #
 Data = filter(Data, Species != "DEDVEG") %>%
@@ -57,7 +58,7 @@ Data = filter(Data, Species != "DEDVEG") %>%
        filter(Species != "DEDURE")
 
 # Remove Non-Native Species #
-Data = filter(Data, Native..N..or...Non..NN. != "NN")
+#Data = filter(Data, Native..N..or...Non..NN. != "NN")
 
 # Separate Data by Pre & Post #
 Pre = filter(Data, Pre.Post == "Pre")

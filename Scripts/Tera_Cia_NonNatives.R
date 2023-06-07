@@ -30,7 +30,7 @@ set.seed(2)
 
 ############ Understory Species Richness/Diversity #############################
 
-Data <- read.csv("Data/Terra Cia - Solar Weed Data - Pre & Post Data.csv")
+Data <- read.csv("Terra_Cia-Solar-Weed-Data/Data/Terra Cia - Solar Weed Data - Pre & Post Data.csv")
 str(Data)
 
 # Reclasifys coverage data (CV) from 1-7 scale to percent scale #
@@ -46,11 +46,11 @@ Data <- mutate(Data, CV_Midpoint = case_when(
 ))
 
 # Remove Plots 1 & 2 #
-Data = filter(Data, Plot != 0)
 Data = filter(Data, Plot != 1)
 Data = filter(Data, Plot != 2)
 
 # Remove extra quadrats #
+Data = filter(Data, Qdrt != 3)
 Data = filter(Data, Qdrt != 4)
 Data = filter(Data, Qdrt != 5)
 
@@ -79,7 +79,7 @@ GRASS_Abundance <- Abundance_w %>%
 GRASS_Cov = 
   ggplot(GRASS_Abundance, aes(Treatment, GRASS_Change_Abundance, fill = Treatment))  +
   geom_boxplot() +
-  geom_point() +
+  ylim(-50, 100) +
   labs(x = "", y = "Gunieagrass % Cover Change") +
   theme_classic() +
   theme(axis.text.x = element_text(color = "black", size = 16, face = "bold"),
@@ -98,18 +98,38 @@ GRASS_Cov_aov = lme(GRASS_Change_Abundance ~ Treatment,
 anova(GRASS_Cov_aov)
 
 ############################## IMPCYL Coverage ########################################
-Cogon = filter(Post, Species == "IMPCYL")
+#CEASER = filter(Data, Species == "URELOB" | Species == "DEDURE")
 
-##  Cover Box Plot ##
-cover_Box =
-  ggplot(Post, aes(x = Treatment, y = CV_Midpoint, fill = Group)) + 
+CEASER = filter(Data, Species == "CEASER")
+
+Pre_Abundance <- CEASER[which(CEASER$Pre.Post == "Pre"),]
+Post_Abundance <- CEASER[which(CEASER$Pre.Post == "Post"),]
+Abundance_w <- full_join(Pre_Abundance, Post_Abundance, by = c('Plot', 'Treatment'))
+Abundance_w$CV_Midpoint.x <- ifelse(is.na(Abundance_w$CV_Midpoint.x), 0, Abundance_w$CV_Midpoint.x)
+Abundance_w$CV_Midpoint.y <- ifelse(is.na(Abundance_w$CV_Midpoint.y), 0, Abundance_w$CV_Midpoint.y)
+CEASER_Abundance <- Abundance_w %>% 
+  dplyr::select(Plot, Treatment, CV_Midpoint.x, CV_Midpoint.y) %>% 
+  group_by(Plot, Treatment) %>% 
+  mutate(CEASER_Change_Abundance = CV_Midpoint.y - CV_Midpoint.x)
+
+
+# Plot CEASER Change in Cover
+CEASER_Cov = 
+  ggplot(CEASER_Abundance, aes(Treatment, CEASER_Change_Abundance, fill = Treatment))  +
   geom_boxplot() +
-  geom_point() +
-  theme_classic(base_size = 14) +
-  theme(legend.position = "none") +
-  xlab("Treatment") +
-  ylab("% Coverage")+
-  theme(axis.text=element_text(size=14),
-        axis.title=element_text(size=16,face="bold"))
-cover_Box
-ggsave("Figures/Fun_cover_Box.png")
+  ylim(-50, 100) +
+  labs(x = "", y = "CEASER % Cover Change") +
+  theme_classic() +
+  theme(axis.text.x = element_text(color = "black", size = 16, face = "bold"),
+        axis.text.y = element_text(color = "black", size = 16, face = "bold"),  
+        axis.title.x = element_text(color = "black", size = 16, face = "bold"),
+        axis.title.y = element_text(color = "black", size = 16, face = "bold"),
+        legend.position = "none",
+        strip.text.x = element_text(size = 16, face = "bold"))
+
+CEASER_Cov
+ggsave("CEASER_Cov.png", width = 12, height = 8)
+
+CEASER_Cov_aov = lme(CEASER_Change_Abundance ~ Treatment, 
+                    random = ~1|Plot, data=CEASER_Abundance)
+anova(CEASER_Cov_aov)
