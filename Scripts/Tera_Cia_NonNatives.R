@@ -30,7 +30,7 @@ set.seed(2)
 
 ############ Understory Species Richness/Diversity #############################
 
-Data <- read.csv("Terra_Cia-Solar-Weed-Data/Data/Terra Cia - Solar Weed Data - Pre & Post Data.csv")
+Data <- read.csv("Data/Terra Cia - Solar Weed Data - Pre & Post Data.csv")
 str(Data)
 
 # Reclasifys coverage data (CV) from 1-7 scale to percent scale #
@@ -92,12 +92,11 @@ GRASS_Cov =
 GRASS_Cov
 ggsave("GRASS_Cov.png", width = 12, height = 8)
 
-
 GRASS_Cov_aov = lme(GRASS_Change_Abundance ~ Treatment, 
                     random = ~1|Plot, data=GRASS_Abundance)
-anova(GRASS_Cov_aov)
+summary(GRASS_Cov_aov)
 
-############################## IMPCYL Coverage ########################################
+############################## Ceaser Coverage ########################################
 #CEASER = filter(Data, Species == "URELOB" | Species == "DEDURE")
 
 CEASER = filter(Data, Species == "CEASER")
@@ -126,10 +125,10 @@ CEASER_Cov =
         axis.title.y = element_text(color = "black", size = 16, face = "bold"),
         legend.position = "none",
         strip.text.x = element_text(size = 16, face = "bold"))
-
 CEASER_Cov
 ggsave("CEASER_Cov.png", width = 12, height = 8)
 
 CEASER_Cov_aov = lme(CEASER_Change_Abundance ~ Treatment, 
                     random = ~1|Plot, data=CEASER_Abundance)
-anova(CEASER_Cov_aov)
+summary(CEASER_Cov_aov)
+

@@ -1,0 +1,26 @@
+{
+    "id": "C27FB49F",
+    "path": "~/GitHub/Terra_Cia-Solar-Weed-Data/Scripts/Tera_Cia_NonNatives.R",
+    "project_path": "Scripts/Tera_Cia_NonNatives.R",
+    "type": "r_source",
+    "hash": "3351339451",
+    "contents": "",
+    "dirty": false,
+    "created": 1686235001659.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "51,15",
+        "scrollLine": "37"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1686247041,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1686247041411,
+    "read_only": false,
+    "read_only_alternatives": []
+}
